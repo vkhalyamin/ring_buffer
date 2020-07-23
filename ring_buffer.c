@@ -1,6 +1,6 @@
 #include "ring_buffer.h"
 
-int BUFFER_init(RING_BUFFER *ringBuffer, uint16_t *buffer, int size) {
+int BUFFER_init(RingBuffer *ringBuffer, uint16_t *buffer, int size) {
     if (!(buffer && size)) {
         return BUFFER_ERROR;
     }
@@ -12,7 +12,7 @@ int BUFFER_init(RING_BUFFER *ringBuffer, uint16_t *buffer, int size) {
     return BUFFER_SUCCESS;
 }
 
-int BUFFER_insert(RING_BUFFER *ringBuffer, uint16_t data) {
+int BUFFER_insert(RingBuffer *ringBuffer, uint16_t data) {
     if ((!ringBuffer) || (!ringBuffer->buffer)) {
         return BUFFER_ERROR;
     }
@@ -29,7 +29,7 @@ int BUFFER_insert(RING_BUFFER *ringBuffer, uint16_t data) {
     return BUFFER_SUCCESS;
 }
 
-int BUFFER_getFirst(RING_BUFFER *ringBuffer, uint16_t *data) {
+int BUFFER_getFirst(RingBuffer *ringBuffer, uint16_t *data) {
     if (BUFFER_isEmpty(ringBuffer)) {
         return BUFFER_ERROR;
     }
@@ -44,7 +44,7 @@ int BUFFER_getFirst(RING_BUFFER *ringBuffer, uint16_t *data) {
     return BUFFER_SUCCESS;
 }
 
-int BUFFER_getLast(RING_BUFFER *ringBuffer, uint16_t *data) {
+int BUFFER_getLast(RingBuffer *ringBuffer, uint16_t *data) {
     if (BUFFER_isEmpty(ringBuffer)) {
         return BUFFER_ERROR;
     }
@@ -59,19 +59,19 @@ int BUFFER_getLast(RING_BUFFER *ringBuffer, uint16_t *data) {
     return BUFFER_SUCCESS;
 }
 
-int BUFFER_getCurrentHeadIndex(RING_BUFFER *ringBuffer) {
+int BUFFER_getCurrentHeadIndex(RingBuffer *ringBuffer) {
     return ringBuffer->head;
 }
 
-int BUFFER_getCurrentTailIndex(RING_BUFFER *ringBuffer) {
+int BUFFER_getCurrentTailIndex(RingBuffer *ringBuffer) {
     return ringBuffer->tail;
 }
 
-int BUFFER_getSize(RING_BUFFER *ringBuffer) {
+int BUFFER_getSize(RingBuffer *ringBuffer) {
     return ringBuffer->size;
 }
 
-int BUFFER_getCount(RING_BUFFER *ringBuffer) {
+int BUFFER_getCount(RingBuffer *ringBuffer) {
     if (ringBuffer->full) {
         return ringBuffer->size;
     }
@@ -81,15 +81,15 @@ int BUFFER_getCount(RING_BUFFER *ringBuffer) {
     }
 }
 
-int BUFFER_isFull(RING_BUFFER *ringBuffer) {
+int BUFFER_isFull(RingBuffer *ringBuffer) {
     return ringBuffer->full;
 }
 
-int BUFFER_isEmpty(RING_BUFFER *ringBuffer) {
+int BUFFER_isEmpty(RingBuffer *ringBuffer) {
     return ((!ringBuffer->full) && (ringBuffer->head == ringBuffer->tail)); 
 }
 
-void BUFFER_flush(RING_BUFFER *ringBuffer) {
+void BUFFER_flush(RingBuffer *ringBuffer) {
     ringBuffer->head = 0;
     ringBuffer->tail = 0;
     ringBuffer->full = 0;

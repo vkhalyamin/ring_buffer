@@ -2,6 +2,7 @@
 #define RING_BUFFER_H_SENTRY
 
 #include <stdint.h>
+#include <stdbool.h>
 
 enum BUFFER_ErrorStatus {
     BUFFER_SUCCESS,
@@ -13,19 +14,19 @@ typedef struct RingBuffer {
     int head;
     int tail;
     int size;
-    int full;
-} RING_BUFFER;
+    bool full;
+} RingBuffer;
 
-int BUFFER_init(RING_BUFFER *ringBuffer, uint16_t *buffer, int size);
-int BUFFER_insert(RING_BUFFER *ringBuffer, uint16_t data);
-int BUFFER_getFirst(RING_BUFFER *ringBuffer, uint16_t *data);
-int BUFFER_getLast(RING_BUFFER *ringBuffer, uint16_t *data);
-int BUFFER_getCurrentHeadIndex(RING_BUFFER *ringBuffer);
-int BUFFER_getCurrentTailIndex(RING_BUFFER *ringBuffer);
-int BUFFER_getSize(RING_BUFFER *ringBuffer);
-int BUFFER_getCount(RING_BUFFER *ringBuffer);
-int BUFFER_isFull(RING_BUFFER *ringBuffer);
-int BUFFER_isEmpty(RING_BUFFER *ringBuffer);
-void BUFFER_flush(RING_BUFFER *ringBuffer);
+int BUFFER_init(RingBuffer *ringBuffer, uint16_t *buffer, int size);
+int BUFFER_insert(RingBuffer *ringBuffer, uint16_t data);
+int BUFFER_getFirst(RingBuffer *ringBuffer, uint16_t *data);
+int BUFFER_getLast(RingBuffer *ringBuffer, uint16_t *data);
+int BUFFER_getCurrentHeadIndex(RingBuffer *ringBuffer);
+int BUFFER_getCurrentTailIndex(RingBuffer *ringBuffer);
+int BUFFER_getSize(RingBuffer *ringBuffer);
+int BUFFER_getCount(RingBuffer *ringBuffer);
+int BUFFER_isFull(RingBuffer *ringBuffer);
+int BUFFER_isEmpty(RingBuffer *ringBuffer);
+void BUFFER_flush(RingBuffer *ringBuffer);
 
 #endif

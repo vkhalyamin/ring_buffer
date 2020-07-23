@@ -6,12 +6,12 @@
 
 enum menuActions {EXIT, INSERT, GET_LAST, GET_FIRST, INFO };
 
-void BUFFER_printInfo(RING_BUFFER *ringBuffer);
+void BUFFER_printInfo(RingBuffer *ringBuffer);
 
 int main(int argc, char **argv) {
     uint16_t data;
     uint16_t *buffer = malloc(BUFFER_SIZE * sizeof(uint16_t));
-    RING_BUFFER *ringBuffer = malloc(sizeof(*ringBuffer));
+    RingBuffer *ringBuffer = malloc(sizeof(*ringBuffer));
 
     BUFFER_init(ringBuffer, buffer, BUFFER_SIZE);
 
@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-void BUFFER_printInfo(RING_BUFFER *ringBuffer)
+void BUFFER_printInfo(RingBuffer *ringBuffer)
 {
     printf("********************\n");
     printf("   Size       : %d\n", ringBuffer->size);
