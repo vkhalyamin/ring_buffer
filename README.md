@@ -8,9 +8,6 @@ In computer science, a circular buffer, circular queue, cyclic buffer or ring bu
 
 ![](./img/buffer_animation.gif)
 
-![](./img/buffer_linear_animation.gif)
-
-
 
 ## API
 
