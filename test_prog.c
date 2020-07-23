@@ -8,8 +8,7 @@ enum menuActions {EXIT, INSERT, GET_LAST, GET_FIRST, INFO };
 
 void BUFFER_printInfo(RING_BUFFER *ringBuffer);
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     uint16_t data;
     uint16_t *buffer = malloc(BUFFER_SIZE * sizeof(uint16_t));
     RING_BUFFER *ringBuffer = malloc(sizeof(*ringBuffer));
@@ -50,6 +49,7 @@ int main(int argc, char **argv)
             }
         }
     }
+    
     return 0;
 }
 

@@ -1,4 +1,4 @@
-#ifndef RING_BUFFER_H_SENTRY
+d#ifndef RING_BUFFER_H_SENTRY
 #define RING_BUFFER_H_SENTRY
 
 #include <stdint.h>
