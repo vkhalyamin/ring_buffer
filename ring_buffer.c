@@ -1,7 +1,7 @@
 #include "ring_buffer.h"
 
 int BUFFER_init(RingBuffer *ringBuffer, uint16_t *buffer, int size) {
-    if (!(buffer && size)) {
+    if (!(buffer && size && ringBuffer)) {
         return BUFFER_ERROR;
     }
 
