@@ -1,0 +1,3 @@
+#!/bin/sh
+
+gcc -Wall test_prog.c ring_buffer.c -o ring_buffer
