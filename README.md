@@ -51,10 +51,12 @@ typedef struct RingBuffer {
     bool full;
 } RingBuffer;
 ```
-## Build
 
-To compile this project use bash script:
+## Tests
+
+To compile tests for this project (Google C++ Testing Framework) use this bash script:
 ```
+cd ./ring_buffer/tests/
 ./build
 ```
 
