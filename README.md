@@ -2,13 +2,6 @@
 
 A simple C implementation for a ring (circular) buffer.
 
-## About
-
-In computer science, a circular buffer, circular queue, cyclic buffer or ring buffer is a data structure that uses a single, fixed-size buffer as if it were connected end-to-end. This structure lends itself easily to buffering data streams. You can see how it works below.
-
-![](./img/buffer_animation.gif)
-
-
 ## API
 
 ````c
@@ -57,6 +50,12 @@ typedef struct RingBuffer {
     int size;
     bool full;
 } RingBuffer;
+```
+## Build
+
+To compile this project use bash script:
+```
+./build
 ```
 
 ## Author
