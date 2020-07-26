@@ -2,22 +2,34 @@
 #include <stdlib.h>
 #include "ring_buffer.h"
 
-#define BUFFER_SIZE 5
+#define EXAMPLE_BUFFER_SIZE 5
 
-enum menuActions {EXIT, INSERT, GET_LAST, GET_FIRST, INFO };
+enum menuActions {
+    EXIT,
+    INSERT,
+    GET_LAST,
+    GET_FIRST,
+    GET_ALL_FROM_HEAD,
+    GET_ALL_FROM_TAIL,
+    INFO
+};
 
-void BUFFER_printInfo(RingBuffer *ringBuffer);
+const char message[] = "Error! Buffer is empty!\n";
+
+void TEST_printRingBufferInfo(RingBuffer *ringBuffer);
+void TEST_printBuffer(uint16_t *destBuffer, int size);
 
 int main(int argc, char **argv) {
     uint16_t data;
-    uint16_t *buffer = malloc(BUFFER_SIZE * sizeof(uint16_t));
+    uint16_t *buffer = malloc(EXAMPLE_BUFFER_SIZE * sizeof(uint16_t));
+    uint16_t *destBuffer = malloc(EXAMPLE_BUFFER_SIZE * sizeof(uint16_t));
     RingBuffer *ringBuffer = malloc(sizeof(*ringBuffer));
 
-    BUFFER_init(ringBuffer, buffer, BUFFER_SIZE);
+    BUFFER_init(ringBuffer, buffer, EXAMPLE_BUFFER_SIZE);
 
     int menuNumber;
     for (;;) {
-        fputs("0 - Exit\n1 - Insert\n2 - Get last\n3 - Get first\n4 - Info\n> ", stdout);
+        fputs("0 - Exit\n1 - Insert\n2 - Get last\n3 - Get first\n4 - Get all from head\n5 - Get all from tail\n6 - Info\n> ", stdout);
         scanf("%d", &menuNumber);
         switch (menuNumber) {
             case EXIT: {
@@ -33,19 +45,27 @@ int main(int argc, char **argv) {
                 break;
             }
             case GET_FIRST: {
-                BUFFER_getFirst(ringBuffer, &data) ? fputs("Error! Buffer is empty!\n", stdout) : printf("%hd\n", data);
+                BUFFER_getFirst(ringBuffer, &data) ? fputs(message, stdout) : printf("%hd\n", data);
                 break;
             }
             case GET_LAST: {
-                BUFFER_getLast(ringBuffer, &data) ? fputs("Error! Buffer is empty!\n", stdout) : printf("%hd\n", data);
+                BUFFER_getLast(ringBuffer, &data) ? fputs(message, stdout) : printf("%hd\n", data);
+                break;
+            }
+            case GET_ALL_FROM_HEAD: {
+                BUFFER_getAllFromHead(ringBuffer, destBuffer, EXAMPLE_BUFFER_SIZE) ? fputs(message, stdout) : TEST_printBuffer(destBuffer, EXAMPLE_BUFFER_SIZE);
+                break;
+            }
+            case GET_ALL_FROM_TAIL: {
+                BUFFER_getAllFromTail(ringBuffer, destBuffer, EXAMPLE_BUFFER_SIZE) ? fputs(message, stdout) : TEST_printBuffer(destBuffer, EXAMPLE_BUFFER_SIZE);
                 break;
             }
             case INFO: {
-                BUFFER_printInfo(ringBuffer);
+                TEST_printRingBufferInfo(ringBuffer);
                 break;
             }
             default: {
-                fputs("An invalide menu number!\n", stdout);
+                fputs("An invalid menu number!\n", stdout);
             }
         }
     }
@@ -53,7 +73,7 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-void BUFFER_printInfo(RingBuffer *ringBuffer)
+void TEST_printRingBufferInfo(RingBuffer *ringBuffer)
 {
     printf("********************\n");
     printf("   Size       : %d\n", ringBuffer->size);
@@ -63,4 +83,12 @@ void BUFFER_printInfo(RingBuffer *ringBuffer)
     printf("   is full    : %d\n", BUFFER_isFull(ringBuffer));
     printf("   is empty   : %d\n", BUFFER_isEmpty(ringBuffer));
     printf("********************\n");
+}
+
+void TEST_printBuffer(uint16_t *destBuffer, int size) {
+    printf("> ");
+    for (int i = 0; i < size; i++) {
+            printf("%hd ", destBuffer[i]);
+    }
+    printf("\n");
 }

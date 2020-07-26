@@ -21,6 +21,8 @@ int BUFFER_init(RingBuffer *ringBuffer, uint16_t *buffer, int size);
 int BUFFER_insert(RingBuffer *ringBuffer, uint16_t data);
 int BUFFER_getFirst(RingBuffer *ringBuffer, uint16_t *data);
 int BUFFER_getLast(RingBuffer *ringBuffer, uint16_t *data);
+int BUFFER_getAllFromHead(RingBuffer *ringBuffer, uint16_t *buffer, int size);
+int BUFFER_getAllFromTail(RingBuffer *ringBuffer, uint16_t *buffer, int size);
 int BUFFER_getCurrentHeadIndex(RingBuffer *ringBuffer);
 int BUFFER_getCurrentTailIndex(RingBuffer *ringBuffer);
 int BUFFER_getSize(RingBuffer *ringBuffer);
