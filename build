@@ -1,3 +1,3 @@
 #!/bin/sh
 
-gcc -Wall test_prog.c ring_buffer.c -o ring_buffer
+gcc -Wall test_prog.c ring_buffer.c memory.c -o ring_buffer

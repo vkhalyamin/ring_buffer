@@ -4,20 +4,22 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "memory.h"
+
 enum BUFFER_ErrorStatus {
     BUFFER_SUCCESS,
     BUFFER_ERROR
 };
 
 typedef struct RingBuffer {
-    uint16_t *buffer;
+    uint32_t addr;
     int head;
     int tail;
     int size;
     bool full;
 } RingBuffer;
 
-int BUFFER_init(RingBuffer *ringBuffer, uint16_t *buffer, int size);
+int BUFFER_init(RingBuffer *ringBuffer, uint32_t addr, int size);
 int BUFFER_insert(RingBuffer *ringBuffer, uint16_t data);
 int BUFFER_getFirst(RingBuffer *ringBuffer, uint16_t *data);
 int BUFFER_getLast(RingBuffer *ringBuffer, uint16_t *data);
