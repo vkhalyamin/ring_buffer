@@ -1,5 +1,5 @@
 #!/bin/sh
 
-gcc -Wall -c ../ring_buffer.c
-g++ -Wall tests.cpp ring_buffer.o -lgtest -lpthread -o test
-rm ring_buffer.o
+gcc -Wall -c ../ring_buffer.c ../memory.c
+g++ -Wall tests.cpp *.o -lgtest -lpthread -o test
+rm *.o
