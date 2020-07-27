@@ -1,11 +1,11 @@
 #include "ring_buffer.h"
 
-int BUFFER_init(RingBuffer *ringBuffer, uint16_t *buffer, int size) {
-    if ((!ringBuffer) || (!buffer) || (!size)) {
+int BUFFER_init(RingBuffer *ringBuffer, uint32_t addr, int size) {
+    if ((!ringBuffer) || (!size)) {
         return BUFFER_ERROR;
     }
 
-    ringBuffer->buffer = buffer;
+    ringBuffer->addr = addr;
     ringBuffer->size = size;
     BUFFER_flush(ringBuffer);
 
@@ -13,11 +13,11 @@ int BUFFER_init(RingBuffer *ringBuffer, uint16_t *buffer, int size) {
 }
 
 int BUFFER_insert(RingBuffer *ringBuffer, uint16_t data) {
-    if ((!ringBuffer) || (!ringBuffer->buffer)) {
+    if (!ringBuffer) {
         return BUFFER_ERROR;
     }
 
-    ringBuffer->buffer[ringBuffer->head] = data;
+    MEMORY_write(ringBuffer->addr + ringBuffer->head, &data, EXAMPLE_DATA_SIZE);
     ringBuffer->head = (ringBuffer->head + 1) % ringBuffer->size;
 
     if (ringBuffer->full) {
@@ -38,7 +38,7 @@ int BUFFER_getFirst(RingBuffer *ringBuffer, uint16_t *data) {
         ringBuffer->full = false;
     }
 
-    *data = ringBuffer->buffer[ringBuffer->tail];
+    MEMORY_read(ringBuffer->addr + ringBuffer->tail, data, EXAMPLE_DATA_SIZE);
     ringBuffer->tail = (ringBuffer->tail + 1) % ringBuffer->size;
 
     return BUFFER_SUCCESS;
@@ -54,23 +54,29 @@ int BUFFER_getLast(RingBuffer *ringBuffer, uint16_t *data) {
     }
 
     (ringBuffer->head) ? (ringBuffer->head--) : (ringBuffer->head = ringBuffer->size - 1);
-    *data = ringBuffer->buffer[ringBuffer->head];
+    /// maybe it's better:
+    /// ringBuffer->head = (ringBuffer->head + ringBuffer->size - 1) % ringBuffer->size;
+    MEMORY_read(ringBuffer->addr + ringBuffer->head, data, EXAMPLE_DATA_SIZE);
 
     return BUFFER_SUCCESS;
 }
 
 int BUFFER_getAllFromHead(RingBuffer *ringBuffer, uint16_t *buffer, int size) {
-    if ((!ringBuffer) || (!buffer) || (size < ringBuffer->size) || (BUFFER_isEmpty(ringBuffer))) {
+    if ((!ringBuffer) || (!buffer) || (!size) || (BUFFER_isEmpty(ringBuffer))) {
         return BUFFER_ERROR;
     }
+
+    if (ringBuffer->full) {
+        ringBuffer->full = false;
+    }
     
-    for (int i = 0; ; i++) {
+    for (int i = 0; i < size; i++) {
         (ringBuffer->head) ? (ringBuffer->head--) : (ringBuffer->head = ringBuffer->size - 1);
-        buffer[i] = ringBuffer->buffer[ringBuffer->head];
+        /// ringBuffer->head = (ringBuffer->head + ringBuffer->size - 1) % ringBuffer->size;
+        MEMORY_read(ringBuffer->addr + ringBuffer->head, &buffer[i], EXAMPLE_DATA_SIZE);
         
         if (ringBuffer->head == ringBuffer->tail) {
-            buffer[i] = ringBuffer->buffer[ringBuffer->head];
-            ringBuffer->full = false;
+            MEMORY_read(ringBuffer->addr + ringBuffer->head, &buffer[i], EXAMPLE_DATA_SIZE);
             break;
         }
     }
@@ -79,16 +85,19 @@ int BUFFER_getAllFromHead(RingBuffer *ringBuffer, uint16_t *buffer, int size) {
 }
 
 int BUFFER_getAllFromTail(RingBuffer *ringBuffer, uint16_t *buffer, int size) {
-    if ((!ringBuffer) || (!buffer) || (size < ringBuffer->size) || (BUFFER_isEmpty(ringBuffer))) {
+    if ((!ringBuffer) || (!buffer) || (!size) || (BUFFER_isEmpty(ringBuffer))) {
         return BUFFER_ERROR;
     }
 
-    for (int i = 0; ; i++) {
-        buffer[i] = ringBuffer->buffer[ringBuffer->tail];
+    if (ringBuffer->full) {
+        ringBuffer->full = false;
+    }
+
+    for (int i = 0; i < size; i++) {
+        MEMORY_read(ringBuffer->addr + ringBuffer->tail, &buffer[i], EXAMPLE_DATA_SIZE);
         ringBuffer->tail = (ringBuffer->tail + 1) % ringBuffer->size;
         
         if (ringBuffer->tail == ringBuffer->head) {
-            ringBuffer->full = false;
             break;
         }
     }
