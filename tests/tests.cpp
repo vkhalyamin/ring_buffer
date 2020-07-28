@@ -2,9 +2,7 @@
 #include <cstdlib>
 #include <stdint.h>
 
-extern "C" {
 #include "../ring_buffer.h"
-}
 
 #define EXAMPLE_BUFFER_SIZE 3
 #define NULL_BUFFER_SIZE 0
@@ -189,6 +187,25 @@ TEST_F(TestRingBuffer, fulshEmptyBuffer) {
     BUFFER_flush(ringBuffer);
     ASSERT_EQ(true, BUFFER_isEmpty(ringBuffer));
 }
+
+
+// !!!
+
+// TEST_F(TestRingBuffer, test) {
+//     BUFFER_init(ringBuffer, buffer, EXAMPLE_BUFFER_SIZE);
+//     BUFFER_insert(RingBuffer, data);
+//     BUFFER_insert(RingBuffer, data);
+//     BUFFER_insert(RingBuffer, data);
+//     BUFFER_getFirst(RingBuffer, &data);
+//     BUFFER_getFirst(RingBuffer, &data);
+//     BUFFER_getFirst(RingBuffer, &data);
+//     BUFFER_insert(RingBuffer, 1);
+//     BUFFER_insert(RingBuffer, 2);
+//     BUFFER_insert(RingBuffer, 3);
+//     BUFFER_insert(RingBuffer, 4);
+//     ASSERT_EQ(true, BUFFER_isEmpty(ringBuffer));
+// }
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
